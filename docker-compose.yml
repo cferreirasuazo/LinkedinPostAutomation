@@ -25,6 +25,8 @@ services:
       - POSTGRES_NAME=postgres
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
+      - LINKEDIN_APPLICATON_KEY=786lpfroe4scuf
+      - LINKEDIN_APPLICATON_SECRET=qQI63ohBenuYp3UH
     depends_on:
       - db
       - redis
