@@ -1,5 +1,4 @@
 from celery import shared_task
-from posts.models import Post
 
 @shared_task
 def printing():

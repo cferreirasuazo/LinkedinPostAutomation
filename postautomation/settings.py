@@ -36,7 +36,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'posts'
+    'celery',
+    'rest_framework',
+    'posts',
+    'api'
 ]
 
 MIDDLEWARE = [
@@ -75,10 +78,10 @@ WSGI_APPLICATION = 'postautomation.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': os.environ.get('POSTGRES_NAME'),
-        'USER': os.environ.get('POSTGRES_USER'),
-        'PASSWORD': os.environ.get('POSTGRES_PASSWORD'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': "postgres",
+        'USER': "postgres",
+        'PASSWORD': "postgres",
         'HOST': 'db',
         'PORT': 5432,
     }
@@ -135,4 +138,6 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 CELERY_BROKER_URL = 'redis://redis:6379'
 CELERY_RESULT_BACKEND = 'redis://redis:6379'
-CELERY_IMPORTS = ("postautomation.tasks",)
+CELERY_IMPORTS = ("postautomation.tasks",'posts.tasks',)
+
+CELERY_TASK_ALWAYS_EAGER=False
