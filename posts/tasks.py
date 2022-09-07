@@ -14,9 +14,13 @@ def printing():
 def linkedin_post(self, post_id):
     print("linkedin_post")
     Post = apps.get_model(app_label='posts', model_name='Post')
-    post = Post.objects.get(id=post_id)
     task_id = self.request.id
-    print(task_id)
-    Post.objects.filter(pk=post_id).update(was_published=True, task_id=task_id)
+    schedule_task = {
+        "id": post_id,
+        "was_published": True,
+        "task_id": task_id
+    }
+
+    Post.objects.update_post(schedule_task)
 
     return task_id

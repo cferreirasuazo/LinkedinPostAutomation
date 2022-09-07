@@ -11,7 +11,6 @@ from posts.utils.Exceptions import NotValidScheduleDate
 from posts.tasks import linkedin_post
 from postautomation.celery import app
 
-
 class PostViewSet(viewsets.ModelViewSet):
     serializer_class = PostSerializer
     queryset = Post.objects.all()
