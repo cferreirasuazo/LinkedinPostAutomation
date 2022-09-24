@@ -1,6 +1,7 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.contrib.auth.models import AbstractUser
 from django.db import models
+from django.apps import apps
 
 
 class UserManager(BaseUserManager):
@@ -18,7 +19,6 @@ class UserManager(BaseUserManager):
         Create and save a SuperUser with the given email and password.
         """
 
-        print(extra_fields)
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_active', True)
@@ -30,6 +30,12 @@ class UserManager(BaseUserManager):
             raise ValueError("Superuser must have is_superuser=True")
 
         return self.create_user(email, password, **extra_fields)
+
+    def user_posts(self, user_id):
+        user = self.get(id = user_id)
+        Post = apps.get_model(app_label='posts', model_name='Post')
+        posts = Post.objects.filter(user=user)
+        return posts
 
 
 class CoreUser(AbstractUser):

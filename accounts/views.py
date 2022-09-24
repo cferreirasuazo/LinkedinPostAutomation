@@ -1,8 +1,9 @@
-from django.contrib.auth.models import User
+from accounts.models import CoreUser
 from rest_framework.response import Response
 from rest_framework.generics import RetrieveAPIView, CreateAPIView
+from rest_framework.views import APIView
 from django.contrib.auth import authenticate
-from .serializers import UserSerializer
+from accounts.serializers import UserSerializer
 
 class UserSignUpView(CreateAPIView):
     def post(self, request):
@@ -12,22 +13,21 @@ class UserSignUpView(CreateAPIView):
         else:
             return Response(serializer.errors,status=500)       
         
-        user = User.objects.get(email=request.data.get("email"))
+        user = CoreUser.objects.get(email=request.data.get("email"))
         serializer = UserSerializer(user)
         return Response(serializer.data,status=201)
         
 
 class UserSignInView(RetrieveAPIView):
-    def get(self,request):
+    def post(self,request):
         email = request.data.get("email")
         password = request.data.get("password")
-
         try:
-            user = User.objects.get(username=email)
-        except User.DoesNotExist:
+            user = CoreUser.objects.get(email=email)
+        except CoreUser.DoesNotExist:
             return Response({"message":"user does not exist"}, status=404)
 
-        is_authenticated = authenticate(username=email, password=password)
+        is_authenticated = authenticate(email=email, password=password)
                 
         if not is_authenticated:
             return Response({"message":"invalid credentials"}, status=406)
@@ -35,3 +35,7 @@ class UserSignInView(RetrieveAPIView):
         serializer = UserSerializer(user)
 
         return Response(serializer.data, status=200)
+
+
+
+

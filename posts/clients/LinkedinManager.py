@@ -29,5 +29,3 @@ class LinkedinManager:
         }
         return access_token
 
-    def make_post(self,post):
-        pass
